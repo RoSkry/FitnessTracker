@@ -7,6 +7,7 @@ namespace FitnessTracker.BL.Model
     /// <summary>
     /// Gender
     /// </summary>
+    [Serializable]
     public class Gender
     {
         /// <summary>

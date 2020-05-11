@@ -7,6 +7,7 @@ namespace FitnessTracker.BL.Model
     /// <summary>
     /// User
     /// </summary>
+    [Serializable]
     public class User
     {
         #region Properties

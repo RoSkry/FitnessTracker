@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FitnessTracker.BL.Controller;
+using System;
 
 namespace FitnessTracker.CMD
 {
@@ -6,7 +7,24 @@ namespace FitnessTracker.CMD
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Hello");
+            Console.WriteLine("Enter your name");
+            var name = Console.ReadLine();
+
+            Console.WriteLine("Enter your gender");
+            var gender = Console.ReadLine();
+
+            Console.WriteLine("Enter your date of birth");
+            var birthDate = DateTime.Parse(Console.ReadLine()); //rewrite
+
+            Console.WriteLine("Enter weight");
+            var weight = double.Parse(Console.ReadLine());
+
+            Console.WriteLine("Enter height");
+            var height = double.Parse(Console.ReadLine());
+
+            var userController = new UserController(name,gender,birthDate,weight,height);
+            userController.Save();
         }
     }
 }
