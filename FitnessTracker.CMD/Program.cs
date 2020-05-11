@@ -11,20 +11,56 @@ namespace FitnessTracker.CMD
             Console.WriteLine("Enter your name");
             var name = Console.ReadLine();
 
-            Console.WriteLine("Enter your gender");
-            var gender = Console.ReadLine();
+            var userController = new UserController(name);
+            if (userController.IsNewUser)
+            {
+                Console.WriteLine("Enter gender");
+                var gender = Console.ReadLine();
 
-            Console.WriteLine("Enter your date of birth");
-            var birthDate = DateTime.Parse(Console.ReadLine()); //rewrite
+                var birthDate = ParseDateTime();
+                var weight = ParseDouble("weight");
+                var height = ParseDouble("height"); ;
 
-            Console.WriteLine("Enter weight");
-            var weight = double.Parse(Console.ReadLine());
+                userController.SetNewUserData(gender, birthDate, weight, height);
+            }
 
-            Console.WriteLine("Enter height");
-            var height = double.Parse(Console.ReadLine());
+            Console.WriteLine(userController.CurrentUser);
+            Console.ReadLine();
+        }
 
-            var userController = new UserController(name,gender,birthDate,weight,height);
-            userController.Save();
+        private static DateTime ParseDateTime()
+        {
+            DateTime birthDate;
+            while (true)
+            {
+                Console.WriteLine("Enter date of birth (dd.MM.yyyy)");
+                if (DateTime.TryParse(Console.ReadLine(), out birthDate))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Wrong date format");
+                }
+            }
+
+            return birthDate;
+        }
+
+        private static double ParseDouble(string name)
+        {
+            while (true)
+            {
+                Console.WriteLine($"Enter {name}");
+                if (double.TryParse(Console.ReadLine(), out double value))
+                {
+                    return value;
+                }
+                else
+                {
+                    Console.WriteLine($"Wrong {name} format");
+                }
+            }
         }
     }
 }
