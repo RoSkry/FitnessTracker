@@ -13,19 +13,20 @@ namespace FitnessTracker.CMD
             var culture = CultureInfo.CreateSpecificCulture("en-us");
             var resourceManager = new ResourceManager("FitnessTracker.CMD.Languages.Messages", typeof(Program).Assembly);
 
-            Console.WriteLine(resourceManager.GetString("Hello",culture));
+            Console.WriteLine(resourceManager.GetString("Hello", culture));
 
             Console.WriteLine(resourceManager.GetString("EnterName", culture));
             var name = Console.ReadLine();
 
             var userController = new UserController(name);
             var eatingController = new EatingController(userController.CurrentUser);
+            var exerciseController = new ExerciseController(userController.CurrentUser);
             if (userController.IsNewUser)
             {
                 Console.WriteLine("Enter gender");
                 var gender = Console.ReadLine();
 
-                var birthDate = ParseDateTime();
+                var birthDate = ParseDateTime("date of birth");
                 var weight = ParseDouble("weight");
                 var height = ParseDouble("height"); ;
 
@@ -34,22 +35,56 @@ namespace FitnessTracker.CMD
 
             Console.WriteLine(userController.CurrentUser);
 
-            Console.WriteLine("What do you want to do ?");
-            Console.WriteLine("E - enter eating");
-            var key = Console.ReadKey();
-            Console.WriteLine();
-            if (key.Key == ConsoleKey.E)
+            while (true)
             {
-                var foods = EnterEating();
-                eatingController.Add(foods.Food, foods.Weight);
+                Console.WriteLine("What do you want to do ?");
+                Console.WriteLine("E - enter eating");
+                Console.WriteLine("A - enter exercise");
+                Console.WriteLine("Q - exit");
+                var key = Console.ReadKey();
+                Console.WriteLine();
 
-                foreach (var item in eatingController.Eating.Foods)
+                switch (key.Key)
                 {
-                    Console.WriteLine($"\t{item.Key} - {item.Value}");
-                }
-            }
+                    case ConsoleKey.E:
+                        var foods = EnterEating();
+                        eatingController.Add(foods.Food, foods.Weight);
 
-            Console.ReadLine();
+                        foreach (var item in eatingController.Eating.Foods)
+                        {
+                            Console.WriteLine($"\t{item.Key} - {item.Value}");
+                        }
+                        break;
+                    case ConsoleKey.A:
+                        var ex = EnterExercise();
+                        exerciseController.Add(ex.Activity, ex.Begin, ex.End);
+                        foreach (var item in exerciseController.Exercises)
+                        {
+                            Console.WriteLine($"\t{item.Activity.Name} from {item.Start.ToShortTimeString()} till {item.Finish.ToShortTimeString()}");
+                        }
+
+                        break;
+                    case ConsoleKey.Q:
+                        Environment.Exit(0);
+                        break;
+                }
+
+                Console.ReadLine();
+            }
+        }
+
+        private static (DateTime Begin, DateTime End, Activity Activity) EnterExercise()
+        {
+            Console.WriteLine("Enter exercise name");
+            var name = Console.ReadLine();
+
+            var energy = ParseDouble("consumption of energy");
+            var begin = ParseDateTime("beginning of exercise");
+            var end = ParseDateTime("end of exercise");
+
+            var activity = new Activity(name, energy);
+
+            return (begin, end, activity);
         }
 
         private static (Food Food, double Weight) EnterEating()
@@ -69,19 +104,19 @@ namespace FitnessTracker.CMD
             return (Food: product, Weight: weight);
         }
 
-        private static DateTime ParseDateTime()
+        private static DateTime ParseDateTime(string value)
         {
             DateTime birthDate;
             while (true)
             {
-                Console.WriteLine("Enter date of birth (dd.MM.yyyy)");
+                Console.WriteLine($"Enter {value} (dd.MM.yyyy)");
                 if (DateTime.TryParse(Console.ReadLine(), out birthDate))
                 {
                     break;
                 }
                 else
                 {
-                    Console.WriteLine("Wrong date format");
+                    Console.WriteLine($"Wrong date format {value}");
                 }
             }
 
