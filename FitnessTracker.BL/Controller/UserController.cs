@@ -14,7 +14,6 @@ namespace FitnessTracker.BL.Controller
     /// </summary>
     public class UserController : BaseController
     {
-        private const string USERS_FILE_NAME = "users.dat";
         /// <summary>
         /// Users of app
         /// </summary>
@@ -42,7 +41,6 @@ namespace FitnessTracker.BL.Controller
                 CurrentUser = new User(userName);
                 Users.Add(CurrentUser);
                 IsNewUser = true;
-                Save();
             }
         }
 
@@ -53,7 +51,7 @@ namespace FitnessTracker.BL.Controller
         /// <returns>Users</returns>
         private List<User> GetUsersData()
         {
-            return Load<List<User>>(USERS_FILE_NAME) ?? new List<User>();
+            return Load<User>() ?? new List<User>();
         }
 
         public void SetNewUserData(string genderName, DateTime birthDate, double weight = 1, double height = 1)
@@ -72,7 +70,7 @@ namespace FitnessTracker.BL.Controller
         /// </summary>
         public void Save()
         {
-            Save(USERS_FILE_NAME, Users);
+            Save( Users);
         }
 
     }

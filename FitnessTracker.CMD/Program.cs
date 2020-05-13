@@ -28,7 +28,7 @@ namespace FitnessTracker.CMD
 
                 var birthDate = ParseDateTime("date of birth");
                 var weight = ParseDouble("weight");
-                var height = ParseDouble("height"); ;
+                var height = ParseDouble("height");
 
                 userController.SetNewUserData(gender, birthDate, weight, height);
             }

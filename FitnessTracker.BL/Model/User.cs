@@ -11,10 +11,11 @@ namespace FitnessTracker.BL.Model
     public class User
     {
         #region Properties
+        public int Id { get; set; }
         /// <summary>
         /// Name
         /// </summary>
-        public string Name { get; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gender
@@ -40,6 +41,8 @@ namespace FitnessTracker.BL.Model
         /// Age
         /// </summary>
         public int Age { get { return DateTime.Now.Year - BirthDate.Year; } }
+        public virtual ICollection<Eating> Eatings { get; set; }
+        public virtual ICollection<Exercise> Exercises { get; set; }
         #endregion
 
         /// <summary>
@@ -83,6 +86,10 @@ namespace FitnessTracker.BL.Model
             Height = height;
         }
 
+        public User()
+        {
+
+        }
         public User(string name)
         {
             if (string.IsNullOrWhiteSpace(name))

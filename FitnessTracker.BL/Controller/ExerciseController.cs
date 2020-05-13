@@ -9,8 +9,6 @@ namespace FitnessTracker.BL.Controller
     public class ExerciseController : BaseController
     {
         private readonly User user;
-        private const string EXERCISE_FILE_NAME = "exercises.dat";
-        private const string ACTIVITY_FILE_NAME = "activity.dat";
         public List<Exercise> Exercises { get; }
         public List<Activity> Activities { get; }
 
@@ -24,19 +22,19 @@ namespace FitnessTracker.BL.Controller
 
         private List<Activity> GetAllActivities()
         {
-            return Load<List<Activity>>(ACTIVITY_FILE_NAME) ?? new List<Activity>();
+            return Load<Activity>() ?? new List<Activity>();
         }
 
         public void Add(Activity activity, DateTime begin, DateTime end)
         {
-            var act = Activities.SingleOrDefault(a=>a.Name == activity.Name);
+            var act = Activities.SingleOrDefault(a => a.Name == activity.Name);
 
-            if(act==null)
+            if (act == null)
             {
                 Activities.Add(activity);
 
                 var exercise = new Exercise(begin, end, activity, user);
-                Exercises.Add(exercise);             
+                Exercises.Add(exercise);
             }
             else
             {
@@ -48,13 +46,13 @@ namespace FitnessTracker.BL.Controller
 
         private List<Exercise> GetAllExrcises()
         {
-            return Load<List<Exercise>>(EXERCISE_FILE_NAME) ?? new List<Exercise>();
+            return Load<Exercise>() ?? new List<Exercise>();
         }
 
         private void Save()
         {
-            Save(EXERCISE_FILE_NAME, Exercises);
-            Save(ACTIVITY_FILE_NAME, Activities);
+            Save(Exercises);
+            Save(Activities);
         }
     }
 }

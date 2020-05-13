@@ -10,14 +10,21 @@ namespace FitnessTracker.BL.Model
     [Serializable]
     public class Gender
     {
+        public int Id { get; set; }
         /// <summary>
         /// Name
         /// </summary>
         public string Name { get; set; }
+        public virtual ICollection<User> Users { get; set; }
         /// <summary>
         /// Create new gender
         /// </summary>
         /// <param name="name">Gender name</param>
+        /// 
+        public Gender()
+        {
+
+        }
         public Gender(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
